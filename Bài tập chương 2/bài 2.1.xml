@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<công_ty>
+    <tên>Công ty TNHH GeeksForGeeks Việt Nam</tên>
+    <giám_đốc>
+        <tên>Nguyễn Văn A</tên>
+        <điện_thoại>090-123-4567</điện_thoại>
+        <địa_chỉ>
+            <đường>123 Đường Công Nghệ</đường>
+            <thành_phố>Hà Nội</thành_phố>
+            <quận>Hai Bà Trưng</quận>
+            <mã_bưu_điện>100000</mã_bưu_điện>
+        </địa_chỉ>
+        <mã_số_thuế>0123456789</mã_số_thuế>
+    </giám_đốc>
+</công_ty>
