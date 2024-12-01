@@ -1,7 +1,7 @@
 import numpy as np
 
 # 1. Đọc dữ liệu từ tập tin baseball_2D.txt
-with open('baseball_2D.txt', 'r') as file:
+with open('Bài tập chương 3\baseball_2D.txt',encoding='utf-8-sig', mode='r') as file:
     baseball = [list(map(float, line.strip().split())) for line in file]
 
 # Tạo 2D numpy array từ danh sách baseball
