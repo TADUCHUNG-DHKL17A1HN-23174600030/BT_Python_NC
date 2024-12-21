@@ -1,26 +1,35 @@
 import numpy as np
 
-# Đọc dữ liệu từ file efficiency.txt
-with open('efficiency.txt', 'r') as f_efficiency:
-    efficiency = [int(line.strip()) for line in f_efficiency]
+# 1. Đọc dữ liệu từ hai tập tin
+hieu_suat = []
+with open('efficiency.txt', 'r') as tap_tin:
+    for dong in tap_tin:
+        hieu_suat.append(int(dong.strip()))
 
-# Đọc dữ liệu từ file shifts.txt
-with open('shifts.txt', 'r') as f_shifts:
-    shifts = [line.strip() for line in f_shifts]
+ca_lam_viec = []
+with open('shifts.txt', 'r') as tap_tin:
+    for dong in tap_tin:
+        ca_lam_viec.append(dong.strip())
 
-# Chuyển list thành numpy array
-np_shifts = np.array(shifts)
-np_efficiency = np.array(efficiency)
+# 2. Tạo mảng numpy np_ca_lam_viec từ danh sách ca_lam_viec và kiểm tra kiểu dữ liệu
+np_ca_lam_viec = np.array(ca_lam_viec)
+print("Kiểu dữ liệu của np_ca_lam_viec:", np_ca_lam_viec.dtype)
 
-# Tính hiệu suất trung bình cho ca 'Morning'
-morning_efficiency = np_efficiency[np_shifts == 'Morning']
-average_morning_efficiency = np.mean(morning_efficiency)
+# 3. Tạo mảng numpy np_hieu_suat từ danh sách hieu_suat và kiểm tra kiểu dữ liệu
+np_hieu_suat = np.array(hieu_suat)
+print("Kiểu dữ liệu của np_hieu_suat:", np_hieu_suat.dtype)
 
-# Tính hiệu suất trung bình cho các ca khác (không phải 'Morning')
-non_morning_efficiency = np_efficiency[np_shifts != 'Morning']
-average_non_morning_efficiency = np.mean(non_morning_efficiency)
+# 4. Tính hiệu suất sản xuất trung bình của những nhân viên làm việc vào ca 'Morning'
+chi_so_ca_sang = np.where(np_ca_lam_viec == 'Morning')
+hieu_suat_ca_sang = np_hieu_suat[chi_so_ca_sang]
 
-# In kết quả
-print(f"Hiệu suất trung bình của ca 'Morning': {average_morning_efficiency}")
-print(f"Hiệu suất trung bình của các ca khác: {average_non_morning_efficiency}")
+hieu_suat_trung_binh_ca_sang = np.mean(hieu_suat_ca_sang)
+print("Hiệu suất trung bình của ca 'Morning':", hieu_suat_trung_binh_ca_sang)
+
+# 5. Tính hiệu suất trung bình của những nhân viên làm việc trong các ca khác
+chi_so_ca_khac = np.where(np_ca_lam_viec != 'Morning')
+hieu_suat_ca_khac = np_hieu_suat[chi_so_ca_khac]
+
+hieu_suat_trung_binh_ca_khac = np.mean(hieu_suat_ca_khac)
+print("Hiệu suất trung bình của các ca khác 'Morning':", hieu_suat_trung_binh_ca_khac)
 

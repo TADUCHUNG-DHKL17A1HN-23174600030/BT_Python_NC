@@ -1,55 +1,45 @@
 import numpy as np
 
-# Tạo mảng nhiệt độ ngẫu nhiên từ 10 đến 35 độ C
-temperature_data = np.random.uniform(10, 35, 30)
-
-# Làm tròn nhiệt độ đến 2 chữ số sau dấu phẩy
-temperature_data = np.round(temperature_data, 2)
+# Tạo mảng nhiệt độ ngẫu nhiên (10 đến 35 độ C) và làm tròn đến 2 chữ số
+nhiet_do = np.round(np.random.uniform(10, 35, 30), 2)
 
 # In mảng nhiệt độ
-print("Dữ liệu nhiệt độ:", temperature_data)
+print("Dữ liệu nhiệt độ:", nhiet_do)
 
-# Tính nhiệt độ trung bình trong tháng
-avg_temperature = np.mean(temperature_data)
-print("Nhiệt độ trung bình trong tháng:", avg_temperature)
+# Tính nhiệt độ trung bình
+nhiet_do_tb = np.mean(nhiet_do)
+print("Nhiệt độ trung bình:", nhiet_do_tb)
 
+# Tìm nhiệt độ cao nhất, thấp nhất và ngày tương ứng
+cao_nhat = np.max(nhiet_do)
+thap_nhat = np.min(nhiet_do)
+ngay_cao_nhat = np.argmax(nhiet_do) + 1
+ngay_thap_nhat = np.argmin(nhiet_do) + 1
+print(f"Nhiệt độ cao nhất: {cao_nhat} (ngày {ngay_cao_nhat})")
+print(f"Nhiệt độ thấp nhất: {thap_nhat} (ngày {ngay_thap_nhat})")
 
-# Tìm ngày có nhiệt độ cao nhất và thấp nhất
-highest_temp = np.max(temperature_data)
-lowest_temp = np.min(temperature_data)
+# Tìm sự chênh lệch nhiệt độ lớn nhất giữa các ngày
+chenh_lech = np.abs(np.diff(nhiet_do))
+ngay_chenh_lech_max = np.argmax(chenh_lech) + 1
+gia_tri_chenh_lech_max = np.max(chenh_lech)
+print(f"Sự chênh lệch lớn nhất: {gia_tri_chenh_lech_max} (ngày {ngay_chenh_lech_max})")
 
-day_highest = np.argmax(temperature_data) + 1  # Cộng thêm 1 vì chỉ mục bắt đầu từ 0
-day_lowest = np.argmin(temperature_data) + 1
+# Các ngày có nhiệt độ trên 20 độ C
+ngay_tren_20 = np.where(nhiet_do > 20)[0] + 1
+print(f"Ngày có nhiệt độ trên 20 độ C: {ngay_tren_20}")
 
-print(f"Nhiệt độ cao nhất: {highest_temp} vào ngày {day_highest}")
-print(f"Nhiệt độ thấp nhất: {lowest_temp} vào ngày {day_lowest}")
+# Nhiệt độ ngày 5, 10, 15, 20, 25
+ngay_chon = [5, 10, 15, 20, 25]
+nhiet_do_ngay_chon = nhiet_do[np.array(ngay_chon) - 1]
+print(f"Nhiệt độ ngày 5, 10, 15, 20, 25: {nhiet_do_ngay_chon}")
 
-# Thống kê sự chênh lệch nhiệt độ giữa các ngày
-temperature_diff = np.abs(np.diff(temperature_data))  # Lấy giá trị tuyệt đối của sự khác biệt
+# Nhiệt độ các ngày trên trung bình
+ngay_tren_tb = np.where(nhiet_do > nhiet_do_tb)[0] + 1
+nhiet_do_tren_tb = nhiet_do[ngay_tren_tb - 1]
+print(f"Nhiệt độ trên trung bình: {nhiet_do_tren_tb}")
 
-# Tìm ngày có sự biến đổi nhiệt độ lớn nhất
-max_diff_day = np.argmax(temperature_diff) + 1  # Thêm 1 vì np.diff giảm chiều dài mảng đi 1
-max_diff_value = np.max(temperature_diff)
-
-print(f"Sự biến đổi nhiệt độ lớn nhất là {max_diff_value} vào ngày {max_diff_day}")
-
-# Tất cả các ngày có nhiệt độ cao hơn 20 độ C
-days_above_20 = np.where(temperature_data > 20)[0] + 1  # Thêm 1 vì chỉ mục bắt đầu từ 0
-print(f"Ngày có nhiệt độ trên 20 độ C: {days_above_20}")
-
-# Lấy nhiệt độ của ngày 5, 10, 15, 20, 25
-days_to_check = [5, 10, 15, 20, 25]
-temperatures_on_selected_days = temperature_data[days_to_check - 1]  # Trừ 1 vì chỉ mục bắt đầu từ 0
-print(f"Nhiệt độ của ngày 5, 10, 15, 20, 25: {temperatures_on_selected_days}")
-
-# Nhiệt độ của các ngày có nhiệt độ trên trung bình
-days_above_avg = np.where(temperature_data > avg_temperature)[0] + 1
-temperatures_above_avg = temperature_data[days_above_avg - 1]
-print(f"Nhiệt độ của các ngày có nhiệt độ trên trung bình: {temperatures_above_avg}")
-
-# Lấy nhiệt độ của các ngày chẵn/lẻ trong tháng
-even_days_temperatures = temperature_data[1::2]  # Ngày chẵn (chỉ mục lẻ)
-odd_days_temperatures = temperature_data[0::2]   # Ngày lẻ (chỉ mục chẵn)
-
-print(f"Nhiệt độ các ngày chẵn: {even_days_temperatures}")
-print(f"Nhiệt độ các ngày lẻ: {odd_days_temperatures}")
+# Nhiệt độ các ngày chẵn và lẻ
+nhiet_do_chan = nhiet_do[1::2]  # Ngày chẵn (chỉ mục lẻ)
+nhiet_do_le = nhiet_do[0::2]    # Ngày lẻ (chỉ mục chẵn)
+print(f"Nhiệt độ ngày chẵn: {nhiet_do_chan}")
+print(f"Nhiệt độ ngày lẻ: {nhiet_do_le}")
