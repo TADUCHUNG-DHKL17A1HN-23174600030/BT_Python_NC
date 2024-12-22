@@ -1,83 +1,85 @@
 import numpy as np
 import csv
 
-# Đọc dữ liệu từ file CSV
-efficiency_data = []
-with open('Data/diem_hoc_phan.csv', 'r') as file:
-    reader = csv.reader(file)
-    header = next(reader)  # Bỏ qua dòng header
-    for row in reader:
-        efficiency_data.append(row[2:5])  # Chỉ lấy dữ liệu điểm của HP1, HP2, HP3
+# 1. Đọc dữ liệu từ file CSV
+file_path = 'diem_hoc_phan.csv'
 
-# Chuyển đổi dữ liệu điểm thành mảng NumPy
-diem_hp = np.array(efficiency_data, dtype=float)
+def doc_du_lieu(file_path):
+    with open(file_path, 'r', encoding='utf-8') as file:
+        reader = csv.reader(file)
+        data = list(reader)
+    return data
 
-# Hiển thị mảng NumPy
-print("Dữ liệu điểm số dưới dạng mảng NumPy:")
-print(diem_hp)
+# Đọc dữ liệu từ file
+raw_data = doc_du_lieu(file_path)
 
-def qui_doi_diem(diem):
-    if diem >= 8.5:
+# Tách header và dữ liệu
+header = raw_data[0]  # Tiêu đề cột
+data = np.array(raw_data[1:], dtype=float)  # Loại bỏ tiêu đề, chuyển dữ liệu sang NumPy array
+
+# 2. Chuyển đổi thang điểm 10 sang điểm chữ
+
+# Hàm quy đổi điểm
+def quy_doi_diem(diem):
+    if 8.5 <= diem <= 10:
         return 'A'
-    elif diem >= 8.0:
+    elif 8.0 <= diem < 8.5:
         return 'B+'
-    elif diem >= 7.0:
+    elif 7.0 <= diem < 8.0:
         return 'B'
-    elif diem >= 6.5:
+    elif 6.5 <= diem < 7.0:
         return 'C+'
-    elif diem >= 5.5:
+    elif 5.5 <= diem < 6.5:
         return 'C'
-    elif diem >= 5.0:
+    elif 5.0 <= diem < 5.5:
         return 'D+'
-    elif diem >= 4.0:
+    elif 4.0 <= diem < 5.0:
         return 'D'
     else:
         return 'F'
 
-# Áp dụng qui đổi cho tất cả điểm trong mảng diem_hp
-diem_tinchi = np.vectorize(qui_doi_diem)(diem_hp)
+# Hàm áp dụng quy đổi cho toàn bộ mảng điểm
+def ap_dung_quy_doi(diem_array):
+    diem_chu = []
+    for diem in diem_array:
+        diem_chu.append(quy_doi_diem(diem))
+    return np.array(diem_chu)
 
-# In kết quả
-print("\nĐiểm tín chỉ cho các học phần:")
-print(diem_tinchi)
+# 3. Chia tách dữ liệu theo học phần
+hp1 = data[:, 2]  # Điểm học phần 1
+hp2 = data[:, 3]  # Điểm học phần 2
+hp3 = data[:, 4]  # Điểm học phần 3
 
-# Chia tách dữ liệu theo từng học phần
-hp1 = diem_hp[:, 0]  # Điểm học phần 1
-hp2 = diem_hp[:, 1]  # Điểm học phần 2
-hp3 = diem_hp[:, 2]  # Điểm học phần 3
+# 4. Phân tích dữ liệu cho từng học phần
 
-# In kết quả
-print("\nĐiểm học phần 1:", hp1)
-print("Điểm học phần 2:", hp2)
-print("Điểm học phần 3:", hp3)
+# Hàm phân tích: tính tổng, trung bình, độ lệch chuẩn
+def phan_tich_diem(hoc_phan):
+    tong = np.sum(hoc_phan)
+    trung_binh = np.mean(hoc_phan)
+    do_lech_chuan = np.std(hoc_phan)
+    return tong, trung_binh, do_lech_chuan
 
-# Phân tích tổng, trung bình và độ lệch chuẩn cho từng học phần
-tongs_hp1 = np.sum(hp1)
-tongs_hp2 = np.sum(hp2)
-tongs_hp3 = np.sum(hp3)
+phan_tich_hp1 = phan_tich_diem(hp1)
+phan_tich_hp2 = phan_tich_diem(hp2)
+phan_tich_hp3 = phan_tich_diem(hp3)
 
-avg_hp1 = np.mean(hp1)
-avg_hp2 = np.mean(hp2)
-avg_hp3 = np.mean(hp3)
+# 5. Phân tích điểm tổng hợp theo điểm chữ
 
-std_hp1 = np.std(hp1)
-std_hp2 = np.std(hp2)
-std_hp3 = np.std(hp3)
+# Hàm thống kê số lượng sinh viên theo điểm chữ
+def thong_ke_diem_chu(hoc_phan):
+    diem_chu = ap_dung_quy_doi(hoc_phan)
+    unique, counts = np.unique(diem_chu, return_counts=True)
+    return dict(zip(unique, counts))
 
-# In kết quả
-print(f"\nTổng điểm học phần 1: {tongs_hp1}, Trung bình: {avg_hp1}, Độ lệch chuẩn: {std_hp1}")
-print(f"Tổng điểm học phần 2: {tongs_hp2}, Trung bình: {avg_hp2}, Độ lệch chuẩn: {std_hp2}")
-print(f"Tổng điểm học phần 3: {tongs_hp3}, Trung bình: {avg_hp3}, Độ lệch chuẩn: {std_hp3}")
+tong_hop_hp1 = thong_ke_diem_chu(hp1)
+tong_hop_hp2 = thong_ke_diem_chu(hp2)
+tong_hop_hp3 = thong_ke_diem_chu(hp3)
 
-from collections import Counter
+# 6. In kết quả
+print("Phân tích HP1: Tổng: {}, Trung bình: {:.2f}, Độ lệch chuẩn: {:.2f}".format(*phan_tich_hp1))
+print("Phân tích HP2: Tổng: {}, Trung bình: {:.2f}, Độ lệch chuẩn: {:.2f}".format(*phan_tich_hp2))
+print("Phân tích HP3: Tổng: {}, Trung bình: {:.2f}, Độ lệch chuẩn: {:.2f}".format(*phan_tich_hp3))
 
-# Chuyển đổi các điểm tín chỉ thành mảng 1 chiều
-flat_diem_tinchi = diem_tinchi.flatten()
-
-# Tính số lượng sinh viên đạt mỗi loại điểm chữ
-counter = Counter(flat_diem_tinchi)
-
-# In kết quả
-print("\nSố lượng sinh viên đạt mỗi loại điểm chữ:")
-for grade, count in counter.items():
-    print(f"{grade}: {count}")
+print("Thống kê điểm chữ HP1:", tong_hop_hp1)
+print("Thống kê điểm chữ HP2:", tong_hop_hp2)
+print("Thống kê điểm chữ HP3:", tong_hop_hp3)
