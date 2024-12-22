@@ -68,18 +68,18 @@ phan_tich_hp3 = phan_tich_diem(hp3)
 # Hàm thống kê số lượng sinh viên theo điểm chữ
 def thong_ke_diem_chu(hoc_phan):
     diem_chu = ap_dung_quy_doi(hoc_phan)
-    unique, counts = np.unique(diem_chu, return_counts=True)
-    return dict(zip(unique, counts))
+    diem_chu_phan_bo, so_luong = np.unique(diem_chu, return_counts=True)
+    return dict(zip(diem_chu_phan_bo, so_luong))
 
-tong_hop_hp1 = thong_ke_diem_chu(hp1)
-tong_hop_hp2 = thong_ke_diem_chu(hp2)
-tong_hop_hp3 = thong_ke_diem_chu(hp3)
+thong_ke_hp1 = thong_ke_diem_chu(hp1)
+thong_ke_hp2 = thong_ke_diem_chu(hp2)
+thong_ke_hp3 = thong_ke_diem_chu(hp3)
 
 # 6. In kết quả
-print("Phân tích HP1: Tổng: {}, Trung bình: {:.2f}, Độ lệch chuẩn: {:.2f}".format(*phan_tich_hp1))
-print("Phân tích HP2: Tổng: {}, Trung bình: {:.2f}, Độ lệch chuẩn: {:.2f}".format(*phan_tich_hp2))
-print("Phân tích HP3: Tổng: {}, Trung bình: {:.2f}, Độ lệch chuẩn: {:.2f}".format(*phan_tich_hp3))
+print(f"Phân tích HP1: Tổng: {phan_tich_hp1[0]}, Trung bình: {phan_tich_hp1[1]}, Độ lệch chuẩn: {phan_tich_hp1[2]}")
+print(f"Phân tích HP2: Tổng: {phan_tich_hp2[0]}, Trung bình: {phan_tich_hp2[1]}, Độ lệch chuẩn: {phan_tich_hp2[2]}")
+print(f"Phân tích HP3: Tổng: {phan_tich_hp3[0]}, Trung bình: {phan_tich_hp3[1]}, Độ lệch chuẩn: {phan_tich_hp3[2]}")
 
-print("Thống kê điểm chữ HP1:", tong_hop_hp1)
-print("Thống kê điểm chữ HP2:", tong_hop_hp2)
-print("Thống kê điểm chữ HP3:", tong_hop_hp3)
+print("Thống kê điểm chữ HP1:", thong_ke_hp1)
+print("Thống kê điểm chữ HP2:", thong_ke_hp2)
+print("Thống kê điểm chữ HP3:", thong_ke_hp3)
