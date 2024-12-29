@@ -33,3 +33,4 @@ hieu_suat_ca_khac = np_hieu_suat[chi_so_ca_khac]
 hieu_suat_trung_binh_ca_khac = np.mean(hieu_suat_ca_khac)
 print("Hiệu suất trung bình của các ca khác 'Morning':", hieu_suat_trung_binh_ca_khac)
 
+
